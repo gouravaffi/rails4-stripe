@@ -1,0 +1,25 @@
+<h3>Welcome</h3>
+<% if user_signed_in? %>
+  <% if current_user.admin? %>
+    <h3>Admin</h3>
+    <p><%= link_to 'User count:', users_path %> <%= User.count %></p>
+  <% else %>
+    <h3>Download the book.</h3>
+    <%= link_to 'Download PDF', products_path('product.pdf'), :class => 'btn btn-success btn-large' %>
+  <% end %>
+<% else %>
+  <h3>Sign up and download the book.</h3>
+  <%= form_tag charges_path do %>
+      <article>
+        <label class="amount">
+          <%= image_tag 'rubyonrails.png', size: '60x60' %>
+          <div>What is Ruby on Rails</div>
+          <span>Amount: $5.00</span>
+        </label>
+      </article>
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="<%= Rails.application.secrets.stripe_publishable_key %>"
+              data-description="Buy 'What is Ruby on Rails'"
+              data-amount="500"></script>
+    <% end %>
+<% end %>
